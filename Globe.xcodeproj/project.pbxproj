@@ -19,6 +19,7 @@
 		42059FE60DFE0228001BA716 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42059FE50DFE0228001BA716 /* CoreGraphics.framework */; };
 		4205A0780DFE05EA001BA716 /* tinyworld4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4205A0770DFE05EA001BA716 /* tinyworld4.png */; };
 		4205A0890DFE065B001BA716 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4205A0880DFE065B001BA716 /* Default.png */; };
+		421BAE2F13B5B33F00C93A71 /* LaunchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 421BAE2E13B5B33F00C93A71 /* LaunchImage.png */; };
 		429000F313B32E7D000D0C57 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 429000F213B32E7D000D0C57 /* Entitlements.plist */; };
 		429D3DEE0DFA0174003B2F1C /* drawglobe.c in Sources */ = {isa = PBXBuildFile; fileRef = 429D3DE80DFA0174003B2F1C /* drawglobe.c */; };
 		429D3DF00DFA0174003B2F1C /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 429D3DEC0DFA0174003B2F1C /* Icon.png */; };
@@ -43,6 +44,7 @@
 		42059FE50DFE0228001BA716 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		4205A0770DFE05EA001BA716 /* tinyworld4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tinyworld4.png; sourceTree = "<group>"; };
 		4205A0880DFE065B001BA716 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		421BAE2E13B5B33F00C93A71 /* LaunchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImage.png; sourceTree = "<group>"; };
 		429000F213B32E7D000D0C57 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		429D3DE80DFA0174003B2F1C /* drawglobe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drawglobe.c; sourceTree = "<group>"; };
 		429D3DE90DFA0174003B2F1C /* drawglobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drawglobe.h; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				421BAE2E13B5B33F00C93A71 /* LaunchImage.png */,
 				4205A0880DFE065B001BA716 /* Default.png */,
 				429D3DEC0DFA0174003B2F1C /* Icon.png */,
 				42B2A0160E006EC90000A1D0 /* Icon2.png */,
@@ -192,6 +195,7 @@
 				4205A0890DFE065B001BA716 /* Default.png in Resources */,
 				42B2A0170E006EC90000A1D0 /* Icon2.png in Resources */,
 				429000F313B32E7D000D0C57 /* Entitlements.plist in Resources */,
+				421BAE2F13B5B33F00C93A71 /* LaunchImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
