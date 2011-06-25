@@ -38,7 +38,7 @@ static GLushort indices[INDEX_LENGTH];
 static int maxIndex;
 
 void generateGlobeVertexArrays(void) {
-  printf("before generateGlobeVertexArrays, glGetError = %x\n", glGetError());
+//  printf("before generateGlobeVertexArrays, glGetError = %x\n", glGetError());
   int count = 0;
   float TWO_PI = 2.0 * M_PI;
   float a;
@@ -60,12 +60,12 @@ void generateGlobeVertexArrays(void) {
   }
   glEnableClientState(GL_VERTEX_ARRAY);
   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  printf("after glEnableClientState, glGetError = %x\n", glGetError());
+//  printf("after glEnableClientState, glGetError = %x\n", glGetError());
   
   glVertexPointer(3, GL_FLOAT, 0, vertices);
-  printf("after glVertexPointer, glGetError = %x\n", glGetError());
+//  printf("after glVertexPointer, glGetError = %x\n", glGetError());
   glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
-  printf("after glTexCoordPointer, glGetError = %x\n", glGetError());
+//  printf("after glTexCoordPointer, glGetError = %x\n", glGetError());
   
   int i;
   count = 0;
@@ -92,7 +92,7 @@ void generateGlobeVertexArrays(void) {
   }
   
   maxIndex = count;
-  printf("after generateGlobeVertexArrays, glGetError = %x\n", glGetError());
+//  printf("after generateGlobeVertexArrays, glGetError = %x\n", glGetError());
 }
 
 void drawGlobeWithVertexArrays(GLuint textureId) {

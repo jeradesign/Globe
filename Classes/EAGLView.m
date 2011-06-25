@@ -43,7 +43,6 @@ CGPoint startTouchPosition;
 
 @synthesize context;
 @synthesize animationTimer;
-@synthesize animationInterval;
 
 
 // You must implement this
@@ -180,6 +179,10 @@ CGPoint startTouchPosition;
 		[self stopAnimation];
 		[self startAnimation];
 	}
+}
+
+- (NSTimeInterval)animationInterval {
+  return animationInterval;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

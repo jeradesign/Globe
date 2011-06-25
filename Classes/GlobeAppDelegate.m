@@ -38,10 +38,7 @@ double tilt4 = INITIAL_TILT;
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
 {
-  UIAccelerationValue x, y, z;
-  x = acceleration.x;
-  y = acceleration.y;
-  z = acceleration.z;
+  UIAccelerationValue z = acceleration.z;
   
   // Do something with the values.
   tilt4 = tilt3;
