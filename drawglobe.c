@@ -20,10 +20,11 @@ GLubyte* glmReadPPM(char* filename, int* width, int* height);
 
 #include "drawglobe.h"
 
-#define THETA_STEPS 20
-#define PHI_STEPS 10
+#define THETA_STEPS 100
+#define PHI_STEPS 50
 //#define THETA_STEPS 4
 //#define PHI_STEPS 3
+#define DRAW_GUIDES 0
 #define ARRAY_LENGTH ((THETA_STEPS + 1) * (PHI_STEPS + 1))
 #define INDEX_LENGTH (3 * ARRAY_LENGTH)
 
@@ -31,6 +32,7 @@ extern GLuint textureId;
 
 static GLfloat vertices[ARRAY_LENGTH][3];
 static GLfloat texCoords[ARRAY_LENGTH][2];
+static GLfloat normals[ARRAY_LENGTH][3];
 static GLushort pointIndices[ARRAY_LENGTH];
 static GLushort lineIndices[PHI_STEPS + 1];
 static GLushort indices[INDEX_LENGTH];
@@ -55,18 +57,22 @@ void generateGlobeVertexArrays(void) {
       vertices[count][2] = z1;
       texCoords[count][0] = s1;
       texCoords[count][1] = t1;
+      normals[count][0] = x1;
+      normals[count][1] = y1;
+      normals[count][2] = z1;
       ++count;
     }
   }
   glEnableClientState(GL_VERTEX_ARRAY);
   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnableClientState(GL_NORMAL_ARRAY);
 //  printf("after glEnableClientState, glGetError = %x\n", glGetError());
   
   glVertexPointer(3, GL_FLOAT, 0, vertices);
 //  printf("after glVertexPointer, glGetError = %x\n", glGetError());
   glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
 //  printf("after glTexCoordPointer, glGetError = %x\n", glGetError());
-  
+  glNormalPointer(GL_FLOAT, 0, normals);
   int i;
   count = 0;
   for (i = 0; i < ARRAY_LENGTH; i++) {
@@ -98,15 +104,19 @@ void generateGlobeVertexArrays(void) {
 void drawGlobeWithVertexArrays(GLuint textureId) {
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_CULL_FACE);
-  glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
+  glEnable(GL_COLOR_MATERIAL);
+//  GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
+//  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+//  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 //  glEnable(GL_FOG);
   glBindTexture(GL_TEXTURE_2D, textureId);
-  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   
 //  printf("before glDrawElements, glGetError = %x\n", glGetError());
   glDrawElements(GL_TRIANGLE_STRIP, maxIndex, GL_UNSIGNED_SHORT, indices);
-#ifdef DRAW_GUIDES
+#if DRAW_GUIDES
   glDisable(GL_TEXTURE_2D);
+  glDisable(GL_LIGHTING);
   glDrawElements(GL_POINTS, ARRAY_LENGTH, GL_UNSIGNED_SHORT, pointIndices);
   glDrawElements(GL_LINE_STRIP, PHI_STEPS + 1, GL_UNSIGNED_SHORT, lineIndices);
 #endif // DRAW_GUIDES

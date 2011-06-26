@@ -19,7 +19,7 @@
 #define USE_DEPTH_BUFFER 0
 
 double rotation = INITIAL_ROTATION;
-double rotation_inc = 0.0;
+double rotation_inc = 0.1;
 double tilt = INITIAL_TILT;
 
 double tilt_inc = 0.0;
@@ -88,9 +88,52 @@ CGPoint startTouchPosition;
 //	glViewport(0, 0, backingWidth, backingHeight);
   glViewport(0, 80, 320, 320);
 
-  glPushMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  glEnable(GL_LIGHTING);
+
+//  glFrustumf(<#GLfloat left#>, <#GLfloat right#>, <#GLfloat bottom#>, <#GLfloat top#>, <#GLfloat zNear#>, <#GLfloat zFar#>)
+  glTranslatef(0.0, 0.0, -1.0);
+  
   glRotatef((GLfloat) tilt, 1.0, 0.0, 0.0);
   glRotatef((GLfloat) rotation, 0.0, 1.0, 0.0);
+  
+  GLfloat red[] = { 1.0, 0.0, 0.0, 1.0} ;
+  GLfloat green[] = { 0.0, 1.0, 0.0, 1.0 } ;
+  GLfloat blue[] = { 0.0, 0.0, 1.0, 1.0 } ;
+  GLfloat orange[] = { 1.0, 1.0, 0.0, 1.0 };
+  GLfloat pink[] = { 1.0, 0.5, 0.5, 1.0 };
+  GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
+
+  GLfloat left[] = {-10.0, 0.0, 0.0, 0.0};
+  GLfloat right[] = {10.0, 0.0, 0.0, 0.0};
+  GLfloat back[] = {0.0, 0.0, -10.0, 0.0};
+  GLfloat front[] = {0.0, 0.0, 10.0, 1.0};
+  
+  GLfloat lmodel_ambient[] = { 0.25, 0.25, 0.25, 1.0 };
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
+  
+  glEnable(GL_LIGHT0);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+  glLightfv(GL_LIGHT0, GL_POSITION, right);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+  
+//  glEnable(GL_LIGHT1);
+//  glLightfv(GL_LIGHT1, GL_DIFFUSE, green);
+//  glLightfv(GL_LIGHT1, GL_POSITION, left);
+//  
+//  glEnable(GL_LIGHT2);
+//  glLightfv(GL_LIGHT2, GL_DIFFUSE, blue);
+//  glLightfv(GL_LIGHT2, GL_POSITION, right);
+//  
+//  glEnable(GL_LIGHT3);
+//  glLightfv(GL_LIGHT3, GL_DIFFUSE, orange);
+//  glLightfv(GL_LIGHT3, GL_POSITION, back);
+//
+//  glEnable(GL_LIGHT4);
+//  glLightfv(GL_LIGHT4, GL_AMBIENT, red);
+//  glLightfv(GL_LIGHT4, GL_POSITION, front);
   
   glEnable(GL_TEXTURE_2D);
   //  glEnable(GL_DEPTH_TEST);
@@ -98,7 +141,6 @@ CGPoint startTouchPosition;
   glClear(GL_COLOR_BUFFER_BIT);
   
   drawGlobeWithVertexArrays(spriteTexture);
-  glPopMatrix();
 	
 	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
 	[context presentRenderbuffer:GL_RENDERBUFFER_OES];
