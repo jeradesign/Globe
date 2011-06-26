@@ -19,7 +19,7 @@
 #define USE_DEPTH_BUFFER 0
 
 double rotation = INITIAL_ROTATION;
-double rotation_inc = 0.1;
+double rotation_inc = 0;
 double tilt = INITIAL_TILT;
 
 double tilt_inc = 0.0;
@@ -111,7 +111,7 @@ CGPoint startTouchPosition;
   GLfloat back[] = {0.0, 0.0, -10.0, 0.0};
   GLfloat front[] = {0.0, 0.0, 10.0, 1.0};
   
-  GLfloat lmodel_ambient[] = { 0.25, 0.25, 0.25, 1.0 };
+  GLfloat lmodel_ambient[] = { 0.17, 0.17, 0.17, 1.0 };
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
   
   glEnable(GL_LIGHT0);

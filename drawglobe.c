@@ -105,8 +105,9 @@ void drawGlobeWithVertexArrays(GLuint textureId) {
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_CULL_FACE);
   glEnable(GL_COLOR_MATERIAL);
-//  GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
-//  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+  GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+//  glMaterialf(GL_FRONT, GL_SHININESS, 128.0);
 //  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 //  glEnable(GL_FOG);
   glBindTexture(GL_TEXTURE_2D, textureId);
