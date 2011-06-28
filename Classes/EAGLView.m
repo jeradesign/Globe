@@ -12,6 +12,7 @@
 
 #import "EAGLView.h"
 #include "drawglobe.h"
+#include "sun_position.h"
 
 #define HORIZ_SWIPE_DRAG_MIN  12
 #define VERT_SWIPE_DRAG_MAX    4
@@ -99,25 +100,22 @@ CGPoint startTouchPosition;
   glRotatef((GLfloat) tilt, 1.0, 0.0, 0.0);
   glRotatef((GLfloat) rotation, 0.0, 1.0, 0.0);
   
-  GLfloat red[] = { 1.0, 0.0, 0.0, 1.0} ;
-  GLfloat green[] = { 0.0, 1.0, 0.0, 1.0 } ;
-  GLfloat blue[] = { 0.0, 0.0, 1.0, 1.0 } ;
-  GLfloat orange[] = { 1.0, 1.0, 0.0, 1.0 };
-  GLfloat pink[] = { 1.0, 0.5, 0.5, 1.0 };
   GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
 
-  GLfloat left[] = {-10.0, 0.0, 0.0, 0.0};
-  GLfloat right[] = {10.0, 0.0, 0.0, 0.0};
-  GLfloat back[] = {0.0, 0.0, -10.0, 0.0};
-  GLfloat front[] = {0.0, 0.0, 10.0, 1.0};
+  GLfloat front[] = {0.0, 0.0, 10.0, 0.0};
+  float sunPosition[] = { 0.0, 0.0, 0.0 };
+  sun_position(sunPosition);
+  front[0] = sunPosition[0];
+  front[1] = sunPosition[1];
+  front[2] = sunPosition[2];
   
   GLfloat lmodel_ambient[] = { 0.17, 0.17, 0.17, 1.0 };
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
   
   glEnable(GL_LIGHT0);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
-  glLightfv(GL_LIGHT0, GL_POSITION, right);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+  glLightfv(GL_LIGHT0, GL_POSITION, front);
+//  glLightfv(GL_LIGHT0, GL_SPECULAR, white);
   
 //  glEnable(GL_LIGHT1);
 //  glLightfv(GL_LIGHT1, GL_DIFFUSE, green);

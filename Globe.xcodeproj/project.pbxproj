@@ -22,6 +22,7 @@
 		429D3DEE0DFA0174003B2F1C /* drawglobe.c in Sources */ = {isa = PBXBuildFile; fileRef = 429D3DE80DFA0174003B2F1C /* drawglobe.c */; };
 		429D3DF00DFA0174003B2F1C /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 429D3DEC0DFA0174003B2F1C /* Icon.png */; };
 		42B2A0170E006EC90000A1D0 /* Icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = 42B2A0160E006EC90000A1D0 /* Icon2.png */; };
+		42B8034E13B7FF480099EC85 /* sun_position.c in Sources */ = {isa = PBXBuildFile; fileRef = 42B8034C13B7FF480099EC85 /* sun_position.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,8 @@
 		429D3DEC0DFA0174003B2F1C /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		429D3DED0DFA0174003B2F1C /* tinyworld2.pbm */ = {isa = PBXFileReference; lastKnownFileType = file; path = tinyworld2.pbm; sourceTree = "<group>"; };
 		42B2A0160E006EC90000A1D0 /* Icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon2.png; sourceTree = "<group>"; };
+		42B8034C13B7FF480099EC85 /* sun_position.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sun_position.c; sourceTree = "<group>"; };
+		42B8034D13B7FF480099EC85 /* sun_position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sun_position.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,6 +109,8 @@
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				429D3DE80DFA0174003B2F1C /* drawglobe.c */,
 				429D3DE90DFA0174003B2F1C /* drawglobe.h */,
+				42B8034C13B7FF480099EC85 /* sun_position.c */,
+				42B8034D13B7FF480099EC85 /* sun_position.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -207,6 +212,7 @@
 				1D3623260D0F684500981E51 /* GlobeAppDelegate.m in Sources */,
 				28FD14FE0DC6FC130079059D /* EAGLView.m in Sources */,
 				429D3DEE0DFA0174003B2F1C /* drawglobe.c in Sources */,
+				42B8034E13B7FF480099EC85 /* sun_position.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,8 +228,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Globe_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Globe;
+				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -235,8 +243,10 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Globe_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Globe;
+				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -265,8 +275,10 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Globe_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Globe;
+				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 			};
 			name = "Ad Hoc";
@@ -293,8 +305,10 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Globe_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = Globe;
+				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 			};
 			name = Distribution;
