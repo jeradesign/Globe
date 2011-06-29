@@ -12,8 +12,6 @@
 #define SECONDS_PER_YEAR (60.0 * 60.0 * 24.0 * 365.242191)
 #define PI 3.141592653589793
 
-static CFAbsoluteTime now = 0;
-
 static double julean_date(int year, int month, double day) {
   if ((month == 1) || (month == 2)) {
     year -= 1;
@@ -59,9 +57,7 @@ static double sidereal_time(CFAbsoluteTime time) {
 }
 
 void sun_position(float positionVector[3]) {
-  if (now == 0) {
-    now = CFAbsoluteTimeGetCurrent();
-  }
+  CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
   
   CFGregorianDate gdate;
   
