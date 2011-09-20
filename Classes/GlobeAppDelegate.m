@@ -23,7 +23,7 @@ double tilt4 = INITIAL_TILT;
 
 	glView.animationInterval = 1.0 / 60.0;
 	[glView startAnimation];
-  [self configureAccelerometer];
+//  [self configureAccelerometer];
 }
 
 
