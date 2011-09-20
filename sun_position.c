@@ -9,6 +9,11 @@
 #include "sun_position.h"
 #include <CoreFoundation/CoreFoundation.h>
 
+// Vernal equinox 3/20/2011 1:16pm
+// Summer solstice 6/21/2011 1:10pm
+// Autumnal equinox 9/23/2011 1:01pm
+// Winter solstice 12/22/2011 12:06pm
+
 #define SECONDS_PER_YEAR (60.0 * 60.0 * 24.0 * 365.242191)
 #define PI 3.141592653589793
 
