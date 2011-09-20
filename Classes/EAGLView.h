@@ -11,8 +11,15 @@
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 
+#define SANTA_CRUZ 1
+
+#ifdef SANTA_CRUZ
+#define INITIAL_ROTATION (121.92119)
+#define INITIAL_TILT 37.37696
+#else
 #define INITIAL_ROTATION -90.0
 #define INITIAL_TILT 10.0
+#endif 
 
 /*
 This class wraps the CAEAGLLayer from CoreAnimation into a convenient UIView subclass.
