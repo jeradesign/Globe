@@ -50,8 +50,8 @@ void generateGlobeVertexArrays(void) {
     float b;
     for (b = 0.0; b < THETA_STEPS + 1; b++) {
       float s1 = b / THETA_STEPS;
-      float x1 = sin(TWO_PI * b / THETA_STEPS) * sin(M_PI * a/PHI_STEPS);
-      float z1 = cos(TWO_PI * b / THETA_STEPS) * sin(M_PI * a/PHI_STEPS);
+      float x1 = sin(TWO_PI * b / THETA_STEPS + M_PI) * sin(M_PI * a/PHI_STEPS);
+      float z1 = cos(TWO_PI * b / THETA_STEPS + M_PI) * sin(M_PI * a/PHI_STEPS);
       vertices[count][0] = x1;
       vertices[count][1] = y1;
       vertices[count][2] = z1;
