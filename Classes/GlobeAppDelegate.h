@@ -10,8 +10,8 @@
 @class EAGLView;
 
 @interface GlobeAppDelegate : NSObject <UIApplicationDelegate, UIAccelerometerDelegate> {
-	IBOutlet UIWindow *window;
-	IBOutlet EAGLView *glView;
+  IBOutlet UIWindow *window;
+  IBOutlet EAGLView *glView;
 }
 
 @property (nonatomic, retain) UIWindow *window;

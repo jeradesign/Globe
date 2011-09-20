@@ -49,55 +49,55 @@ CGPoint startTouchPosition;
 
 // You must implement this
 + (Class)layerClass {
-	return [CAEAGLLayer class];
+  return [CAEAGLLayer class];
 }
 
 
 //The GL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:
 - (id)initWithCoder:(NSCoder*)coder {
-
-	if ((self = [super initWithCoder:coder])) {
-		// Get the layer
-		CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
-		
-		eaglLayer.opaque = YES;
-		eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-		   [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
-		
-		context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-		
-		if (!context || ![EAGLContext setCurrentContext:context]) {
-			[self release];
-			return nil;
-		}
-		
-		animationInterval = 1.0 / 60.0;
+  
+  if ((self = [super initWithCoder:coder])) {
+    // Get the layer
+    CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
+    
+    eaglLayer.opaque = YES;
+    eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
+    
+    context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+    
+    if (!context || ![EAGLContext setCurrentContext:context]) {
+      [self release];
+      return nil;
+    }
+    
+    animationInterval = 1.0 / 60.0;
     generateGlobeVertexArrays();
     [self initTexture];
-	}
-	return self;
+  }
+  return self;
 }
 
 
 - (void)drawView {
-	
+  
   rotation += rotation_inc;
   tilt += tilt_inc;
-	
-	[EAGLContext setCurrentContext:context];
-	
-	glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
-//	glViewport(0, 0, backingWidth, backingHeight);
+  
+  [EAGLContext setCurrentContext:context];
+  
+  glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
+  //	glViewport(0, 0, backingWidth, backingHeight);
   glViewport(0, 80, 320, 320);
-
+  
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
 #if USE_LIGHTING
   glEnable(GL_LIGHTING);
 #endif
-
-//  glFrustumf(<#GLfloat left#>, <#GLfloat right#>, <#GLfloat bottom#>, <#GLfloat top#>, <#GLfloat zNear#>, <#GLfloat zFar#>)
+  
+  //  glFrustumf(<#GLfloat left#>, <#GLfloat right#>, <#GLfloat bottom#>, <#GLfloat top#>, <#GLfloat zNear#>, <#GLfloat zFar#>)
   glTranslatef(0.0, 0.0, -1.0);
   
   glRotatef((GLfloat) tilt, 1.0, 0.0, 0.0);
@@ -105,7 +105,7 @@ CGPoint startTouchPosition;
   
 #if USE_LIGHTING
   GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
-
+  
   GLfloat front[] = {0.0, 0.0, 10.0, 0.0};
   float sunPosition[] = { 0.0, 0.0, 0.0 };
   sun_position(sunPosition);
@@ -119,23 +119,23 @@ CGPoint startTouchPosition;
   glEnable(GL_LIGHT0);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
   glLightfv(GL_LIGHT0, GL_POSITION, front);
-//  glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+  //  glLightfv(GL_LIGHT0, GL_SPECULAR, white);
   
-//  glEnable(GL_LIGHT1);
-//  glLightfv(GL_LIGHT1, GL_DIFFUSE, green);
-//  glLightfv(GL_LIGHT1, GL_POSITION, left);
-//  
-//  glEnable(GL_LIGHT2);
-//  glLightfv(GL_LIGHT2, GL_DIFFUSE, blue);
-//  glLightfv(GL_LIGHT2, GL_POSITION, right);
-//  
-//  glEnable(GL_LIGHT3);
-//  glLightfv(GL_LIGHT3, GL_DIFFUSE, orange);
-//  glLightfv(GL_LIGHT3, GL_POSITION, back);
-//
-//  glEnable(GL_LIGHT4);
-//  glLightfv(GL_LIGHT4, GL_AMBIENT, red);
-//  glLightfv(GL_LIGHT4, GL_POSITION, front);
+  //  glEnable(GL_LIGHT1);
+  //  glLightfv(GL_LIGHT1, GL_DIFFUSE, green);
+  //  glLightfv(GL_LIGHT1, GL_POSITION, left);
+  //  
+  //  glEnable(GL_LIGHT2);
+  //  glLightfv(GL_LIGHT2, GL_DIFFUSE, blue);
+  //  glLightfv(GL_LIGHT2, GL_POSITION, right);
+  //  
+  //  glEnable(GL_LIGHT3);
+  //  glLightfv(GL_LIGHT3, GL_DIFFUSE, orange);
+  //  glLightfv(GL_LIGHT3, GL_POSITION, back);
+  //
+  //  glEnable(GL_LIGHT4);
+  //  glLightfv(GL_LIGHT4, GL_AMBIENT, red);
+  //  glLightfv(GL_LIGHT4, GL_POSITION, front);
 #endif
   
   glEnable(GL_TEXTURE_2D);
@@ -144,86 +144,86 @@ CGPoint startTouchPosition;
   glClear(GL_COLOR_BUFFER_BIT);
   
   drawGlobeWithVertexArrays(spriteTexture);
-	
-	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
-	[context presentRenderbuffer:GL_RENDERBUFFER_OES];
+  
+  glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+  [context presentRenderbuffer:GL_RENDERBUFFER_OES];
 }
 
 
 - (void)layoutSubviews {
-	[EAGLContext setCurrentContext:context];
-	[self destroyFramebuffer];
-	[self createFramebuffer];
-	[self drawView];
+  [EAGLContext setCurrentContext:context];
+  [self destroyFramebuffer];
+  [self createFramebuffer];
+  [self drawView];
 }
 
 
 - (BOOL)createFramebuffer {
-	
-	glGenFramebuffersOES(1, &viewFramebuffer);
-	glGenRenderbuffersOES(1, &viewRenderbuffer);
-	
-	glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
-	glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
-	[context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(CAEAGLLayer*)self.layer];
-	glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, viewRenderbuffer);
-	
-	glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &backingWidth);
-	glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &backingHeight);
-	
-	if (USE_DEPTH_BUFFER) {
-		glGenRenderbuffersOES(1, &depthRenderbuffer);
-		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer);
-		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, backingWidth, backingHeight);
-		glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, depthRenderbuffer);
-	}
-
-	if(glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES) {
-		NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
-		return NO;
-	}
-	
-	return YES;
+  
+  glGenFramebuffersOES(1, &viewFramebuffer);
+  glGenRenderbuffersOES(1, &viewRenderbuffer);
+  
+  glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
+  glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
+  [context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(CAEAGLLayer*)self.layer];
+  glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, viewRenderbuffer);
+  
+  glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &backingWidth);
+  glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &backingHeight);
+  
+  if (USE_DEPTH_BUFFER) {
+    glGenRenderbuffersOES(1, &depthRenderbuffer);
+    glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer);
+    glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, backingWidth, backingHeight);
+    glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, depthRenderbuffer);
+  }
+  
+  if(glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES) {
+    NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
+    return NO;
+  }
+  
+  return YES;
 }
 
 
 - (void)destroyFramebuffer {
-	
-	glDeleteFramebuffersOES(1, &viewFramebuffer);
-	viewFramebuffer = 0;
-	glDeleteRenderbuffersOES(1, &viewRenderbuffer);
-	viewRenderbuffer = 0;
-	
-	if(depthRenderbuffer) {
-		glDeleteRenderbuffersOES(1, &depthRenderbuffer);
-		depthRenderbuffer = 0;
-	}
+  
+  glDeleteFramebuffersOES(1, &viewFramebuffer);
+  viewFramebuffer = 0;
+  glDeleteRenderbuffersOES(1, &viewRenderbuffer);
+  viewRenderbuffer = 0;
+  
+  if(depthRenderbuffer) {
+    glDeleteRenderbuffersOES(1, &depthRenderbuffer);
+    depthRenderbuffer = 0;
+  }
 }
 
 
 - (void)startAnimation {
-	self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval target:self selector:@selector(drawView) userInfo:nil repeats:YES];
+  self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval target:self selector:@selector(drawView) userInfo:nil repeats:YES];
 }
 
 
 - (void)stopAnimation {
-	self.animationTimer = nil;
+  self.animationTimer = nil;
 }
 
 
 - (void)setAnimationTimer:(NSTimer *)newTimer {
-	[animationTimer invalidate];
-	animationTimer = newTimer;
+  [animationTimer invalidate];
+  animationTimer = newTimer;
 }
 
 
 - (void)setAnimationInterval:(NSTimeInterval)interval {
-	
-	animationInterval = interval;
-	if (animationTimer) {
-		[self stopAnimation];
-		[self startAnimation];
-	}
+  
+  animationInterval = interval;
+  if (animationTimer) {
+    [self stopAnimation];
+    [self startAnimation];
+  }
 }
 
 - (NSTimeInterval)animationInterval {
@@ -243,7 +243,7 @@ CGPoint startTouchPosition;
   
   float dx = (currentTouchPosition.x - startTouchPosition.x);
   float dy = (currentTouchPosition.y - startTouchPosition.y);
-
+  
   // If the swipe tracks correctly.
   if (fabsf(dx) >= HORIZ_SWIPE_DRAG_MIN &&
       fabsf(dy) <= fabsf(dx) / 2.0)
@@ -265,11 +265,11 @@ CGPoint startTouchPosition;
 
 - (void)initTexture
 {
-	CGImageRef spriteImage;
-	CGContextRef spriteContext;
-	GLubyte *spriteData;
-	size_t	width, height;
-
+  CGImageRef spriteImage;
+  CGContextRef spriteContext;
+  GLubyte *spriteData;
+  size_t	width, height;
+  
   // Creates a Core Graphics image from an image file
   spriteImage = [UIImage imageNamed:@"tinyworld4.png"].CGImage;
   // Get the width and height of the image
@@ -277,7 +277,7 @@ CGPoint startTouchPosition;
   height = CGImageGetHeight(spriteImage);
   // Texture dimensions must be a power of 2. If you write an application that allows users to supply an image,
   // you'll want to add code that checks the dimensions and takes appropriate action if they are not a power of 2.
-
+  
   if(spriteImage) {
     // Allocated memory needed for the bitmap context
     spriteData = (GLubyte *) malloc(width * height * 4);
@@ -310,15 +310,15 @@ CGPoint startTouchPosition;
 }
 
 - (void)dealloc {
-	
-	[self stopAnimation];
-	
-	if ([EAGLContext currentContext] == context) {
-		[EAGLContext setCurrentContext:nil];
-	}
-	
-	[context release];	
-	[super dealloc];
+  
+  [self stopAnimation];
+  
+  if ([EAGLContext currentContext] == context) {
+    [EAGLContext setCurrentContext:nil];
+  }
+  
+  [context release];	
+  [super dealloc];
 }
 
 @end

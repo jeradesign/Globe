@@ -20,20 +20,20 @@ double tilt4 = INITIAL_TILT;
 @synthesize glView;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-
-	glView.animationInterval = 1.0 / 60.0;
-	[glView startAnimation];
-//  [self configureAccelerometer];
+  
+  glView.animationInterval = 1.0 / 60.0;
+  [glView startAnimation];
+  //  [self configureAccelerometer];
 }
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-	glView.animationInterval = 1.0 / 5.0;
+  glView.animationInterval = 1.0 / 5.0;
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	glView.animationInterval = 1.0 / 60.0;
+  glView.animationInterval = 1.0 / 60.0;
 }
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
@@ -47,7 +47,7 @@ double tilt4 = INITIAL_TILT;
   tilt1 = tilt0;
   tilt0 = -90 * z;
   glView->tilt = (tilt0 + tilt1 + tilt2 + tilt3) / 4;
-//  printf("x = %f, y = %f, z = %f\n", x, y, z);
+  //  printf("x = %f, y = %f, z = %f\n", x, y, z);
 }
 
 #define kAccelerometerFrequency        50 //Hz
@@ -60,9 +60,9 @@ double tilt4 = INITIAL_TILT;
 }
 
 - (void)dealloc {
-	[window release];
-	[glView release];
-	[super dealloc];
+  [window release];
+  [glView release];
+  [super dealloc];
 }
 
 @end
