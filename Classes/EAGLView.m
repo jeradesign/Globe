@@ -18,6 +18,7 @@
 #define VERT_SWIPE_DRAG_MAX    4
 
 #define USE_DEPTH_BUFFER 0
+#define USE_LIGHTING 1
 
 double rotation = INITIAL_ROTATION;
 double rotation_inc = 0;
@@ -92,7 +93,9 @@ CGPoint startTouchPosition;
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
+#if USE_LIGHTING
   glEnable(GL_LIGHTING);
+#endif
 
 //  glFrustumf(<#GLfloat left#>, <#GLfloat right#>, <#GLfloat bottom#>, <#GLfloat top#>, <#GLfloat zNear#>, <#GLfloat zFar#>)
   glTranslatef(0.0, 0.0, -1.0);
@@ -100,6 +103,7 @@ CGPoint startTouchPosition;
   glRotatef((GLfloat) tilt, 1.0, 0.0, 0.0);
   glRotatef((GLfloat) rotation, 0.0, 1.0, 0.0);
   
+#if USE_LIGHTING
   GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
 
   GLfloat front[] = {0.0, 0.0, 10.0, 0.0};
@@ -109,7 +113,7 @@ CGPoint startTouchPosition;
   front[1] = sunPosition[1];
   front[2] = sunPosition[2];
   
-  GLfloat lmodel_ambient[] = { 0.17, 0.17, 0.17, 1.0 };
+  GLfloat lmodel_ambient[] = { 0.13, 0.13, 0.13, 1.0 };
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
   
   glEnable(GL_LIGHT0);
@@ -132,6 +136,7 @@ CGPoint startTouchPosition;
 //  glEnable(GL_LIGHT4);
 //  glLightfv(GL_LIGHT4, GL_AMBIENT, red);
 //  glLightfv(GL_LIGHT4, GL_POSITION, front);
+#endif
   
   glEnable(GL_TEXTURE_2D);
   //  glEnable(GL_DEPTH_TEST);
