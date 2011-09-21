@@ -22,16 +22,18 @@
 
 #define RADIUS 160.0
 #define CENTER_X 160.0
+#define FLICK_SPEED_THRESHOLD 200.0
 
-double rotation = INITIAL_ROTATION;
-double rotation_inc = 1;
-double tilt = INITIAL_TILT;
-double tilt_inc = 0.0;
+static double rotation = INITIAL_ROTATION;
+static double rotation_inc = 1;
+static double tilt_inc = 0.0;
 
-double starting_rotation = 0.0;
-double starting_rotation_offset = 0.0;
+static double starting_rotation = 0.0;
+static double starting_rotation_offset = 0.0;
+static NSTimeInterval last_touch_time;
+static CGPoint last_touch_location;
 
-CGPoint startTouchPosition;
+static CGPoint startTouchPosition;
 
 // A class extension to declare private methods
 @interface EAGLView ()
@@ -240,9 +242,17 @@ CGPoint startTouchPosition;
 
 #pragma mark - Touch Event Handling
 
+- (void)logMessage:(const char *)message withTouch:(UITouch *)touch {
+//  CGPoint location = [touch locationInView:self];
+//  NSLog(@"%s: %f, (%f, %f)", message, touch.timestamp, location.x, location.y);
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
   UITouch *touch = [touches anyObject];
+  [self logMessage:__PRETTY_FUNCTION__ withTouch:touch];
+  last_touch_time = touch.timestamp;
+  last_touch_location = [touch locationInView:self];
   startTouchPosition = [touch locationInView:self];
   rotation_inc = 0.0;
   starting_rotation = rotation;
@@ -252,35 +262,44 @@ CGPoint startTouchPosition;
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
   UITouch *touch = touches.anyObject;
+  [self logMessage:__PRETTY_FUNCTION__ withTouch:touch];
+  last_touch_time = touch.timestamp;
+  last_touch_location = [touch locationInView:self];
   CGPoint currentTouchPosition = [touch locationInView:self];
   rotation = [self rotationFromBase:CENTER_X toOffset:currentTouchPosition.x];
   rotation += starting_rotation - starting_rotation_offset;
 }
 
-- (BOOL)wasFlicked:(UITouch *)touch {
+- (double)speedForTouch:(UITouch *)touch {
   CGPoint endPoint = [touch locationInView:self];
-  CGPoint startPoint = [touch previousLocationInView:self];
+  CGPoint startPoint = last_touch_location;
   double diffX = endPoint.x - startPoint.x;
   double diffY = endPoint.y - startPoint.y;
   double dist = sqrt(diffX * diffX + diffY * diffY);
+  double deltaT = touch.timestamp - last_touch_time;
+  double speed = dist / deltaT;
   
-  NSLog(@"Last dist = %f", dist);
+//  NSLog(@"speed = %f", speed);
   
-  return dist > 20.0; // experiment with best value
+  return speed; // experiment with best value
 }
 
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
   UITouch *touch = [touches anyObject];
-  if(![self wasFlicked:touch]) {
+  [self logMessage:__PRETTY_FUNCTION__ withTouch:touch];
+  double speed = [self speedForTouch:touch];
+  if(speed < FLICK_SPEED_THRESHOLD) {
     debugLabel.text = @"not flicked";
+//    NSLog(@"not flicked");
     return;
   }
   debugLabel.text = @"flicked";
+  NSLog(@"flicked");
   double currentX = [touch locationInView:self].x;
   if (isnan(currentX)) {
     NSLog(@"isnan(currentX)");
   }
-  double previousX = [touch previousLocationInView:self].x;
+  double previousX = last_touch_location.x;
   if (isnan(previousX)) {
     NSLog(@"isnan(previousX)");
   }
@@ -288,17 +307,21 @@ CGPoint startTouchPosition;
   if (isnan(deltaAngle)) {
     NSLog(@"isnan(deltaAngle)");
   }
-  rotation_inc = deltaAngle / 10;
+  double deltaT = touch.timestamp - last_touch_time;
+  rotation_inc = (deltaAngle / deltaT) * animationInterval;
+//  NSLog(@"deltaAngle = %f, deltaT = %f, rotation_inc = %f", deltaAngle, deltaT, rotation_inc);
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-  return;
+  UITouch *touch = [touches anyObject];
+  [self logMessage:__PRETTY_FUNCTION__ withTouch:touch];
 }
 
 - (double)rotationFromBase:(double)base toOffset:(double)offset {
   double result = asin((offset - base) / RADIUS);
   if (isnan(result)) {
-    NSLog(@"isnan(result)");
+    NSLog(@"%s isnan(result)", __PRETTY_FUNCTION__);
+    result = 0;
   }
   result *= 180.0 / M_PI;
   NSString *resultAsString = [NSString stringWithFormat:@"%f", result];
