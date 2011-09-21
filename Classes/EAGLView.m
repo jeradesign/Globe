@@ -275,7 +275,7 @@ CGPoint startTouchPosition;
     debugLabel.text = @"not flicked";
     return;
   }
-  debugLabel.text = @"not flicked";
+  debugLabel.text = @"flicked";
   double currentX = [touch locationInView:self].x;
   if (isnan(currentX)) {
     NSLog(@"isnan(currentX)");
