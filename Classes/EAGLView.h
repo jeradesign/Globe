@@ -50,6 +50,7 @@
 }
 
 @property NSTimeInterval animationInterval;
+@property (nonatomic, retain) UILabel *debugLabel;
 
 - (void)startAnimation;
 - (void)stopAnimation;

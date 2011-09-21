@@ -12,12 +12,14 @@
 @interface GlobeAppDelegate : NSObject <UIApplicationDelegate, UIAccelerometerDelegate> {
   IBOutlet UIWindow *window;
   IBOutlet EAGLView *glView;
+  IBOutlet UILabel *debugLabel;
 }
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) EAGLView *glView;
 
--(void)configureAccelerometer;
+- (IBAction)infoButtonPressed:(id)sender;
+- (void)configureAccelerometer;
 
 @end
 

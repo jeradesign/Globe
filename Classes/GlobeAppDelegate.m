@@ -20,7 +20,7 @@ double tilt4 = INITIAL_TILT;
 @synthesize glView;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-  
+  glView.debugLabel = debugLabel;
   glView.animationInterval = 1.0 / 60.0;
   [glView startAnimation];
   //  [self configureAccelerometer];
@@ -51,6 +51,9 @@ double tilt4 = INITIAL_TILT;
 }
 
 #define kAccelerometerFrequency        50 //Hz
+- (IBAction)infoButtonPressed:(id)sender {
+}
+
 - (void)configureAccelerometer
 {
   UIAccelerometer*  theAccelerometer = [UIAccelerometer sharedAccelerometer];
@@ -62,6 +65,7 @@ double tilt4 = INITIAL_TILT;
 - (void)dealloc {
   [window release];
   [glView release];
+  [debugLabel release];
   [super dealloc];
 }
 

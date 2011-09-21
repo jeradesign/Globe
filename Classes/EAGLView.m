@@ -20,11 +20,16 @@
 #define USE_DEPTH_BUFFER 0
 #define USE_LIGHTING 1
 
-double rotation = INITIAL_ROTATION;
-double rotation_inc = 0;
-double tilt = INITIAL_TILT;
+#define RADIUS 160.0
+#define CENTER_X 160.0
 
+double rotation = INITIAL_ROTATION;
+double rotation_inc = 1;
+double tilt = INITIAL_TILT;
 double tilt_inc = 0.0;
+
+double starting_rotation = 0.0;
+double starting_rotation_offset = 0.0;
 
 CGPoint startTouchPosition;
 
@@ -37,6 +42,7 @@ CGPoint startTouchPosition;
 - (BOOL) createFramebuffer;
 - (void) destroyFramebuffer;
 - (void) initTexture;
+- (double) rotationFromBase:(double) base toOffset:(double) offset;
 
 @end
 
@@ -45,6 +51,7 @@ CGPoint startTouchPosition;
 
 @synthesize context;
 @synthesize animationTimer;
+@synthesize debugLabel;
 
 
 // You must implement this
@@ -113,7 +120,7 @@ CGPoint startTouchPosition;
   front[1] = sunPosition[1];
   front[2] = sunPosition[2];
   
-  GLfloat lmodel_ambient[] = { 0.13, 0.13, 0.13, 1.0 };
+  GLfloat lmodel_ambient[] = { 0.17, 0.17, 0.17, 1.0 };
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
   
   glEnable(GL_LIGHT0);
@@ -200,6 +207,7 @@ CGPoint startTouchPosition;
   }
 }
 
+#pragma mark - Animation
 
 - (void)startAnimation {
   self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:animationInterval target:self selector:@selector(drawView) userInfo:nil repeats:YES];
@@ -230,38 +238,75 @@ CGPoint startTouchPosition;
   return animationInterval;
 }
 
+#pragma mark - Touch Event Handling
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
   UITouch *touch = [touches anyObject];
   startTouchPosition = [touch locationInView:self];
+  rotation_inc = 0.0;
+  starting_rotation = rotation;
+  starting_rotation_offset = [self rotationFromBase:CENTER_X toOffset:startTouchPosition.x];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
   UITouch *touch = touches.anyObject;
   CGPoint currentTouchPosition = [touch locationInView:self];
-  
-  float dx = (currentTouchPosition.x - startTouchPosition.x);
-  float dy = (currentTouchPosition.y - startTouchPosition.y);
-  
-  // If the swipe tracks correctly.
-  if (fabsf(dx) >= HORIZ_SWIPE_DRAG_MIN &&
-      fabsf(dy) <= fabsf(dx) / 2.0)
-  {
-    rotation_inc = dx / 20;
-  }
+  rotation = [self rotationFromBase:CENTER_X toOffset:currentTouchPosition.x];
+  rotation += starting_rotation - starting_rotation_offset;
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-  UITouch *touch = [touches anyObject];
-  if([touch tapCount] == 2) {
-    rotation = INITIAL_ROTATION;
-    rotation_inc = 0.0;
-    tilt = INITIAL_TILT;
-    tilt_inc = 0.0;    
-  }
+- (BOOL)wasFlicked:(UITouch *)touch {
+  CGPoint endPoint = [touch locationInView:self];
+  CGPoint startPoint = [touch previousLocationInView:self];
+  double diffX = endPoint.x - startPoint.x;
+  double diffY = endPoint.y - startPoint.y;
+  double dist = sqrt(diffX * diffX + diffY * diffY);
+  
+  NSLog(@"Last dist = %f", dist);
+  
+  return dist > 20.0; // experiment with best value
 }
+
+- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
+  UITouch *touch = [touches anyObject];
+  if(![self wasFlicked:touch]) {
+    debugLabel.text = @"not flicked";
+    return;
+  }
+  debugLabel.text = @"not flicked";
+  double currentX = [touch locationInView:self].x;
+  if (isnan(currentX)) {
+    NSLog(@"isnan(currentX)");
+  }
+  double previousX = [touch previousLocationInView:self].x;
+  if (isnan(previousX)) {
+    NSLog(@"isnan(previousX)");
+  }
+  double deltaAngle = [self rotationFromBase:previousX toOffset:currentX];
+  if (isnan(deltaAngle)) {
+    NSLog(@"isnan(deltaAngle)");
+  }
+  rotation_inc = deltaAngle / 10;
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+  return;
+}
+
+- (double)rotationFromBase:(double)base toOffset:(double)offset {
+  double result = asin((offset - base) / RADIUS);
+  if (isnan(result)) {
+    NSLog(@"isnan(result)");
+  }
+  result *= 180.0 / M_PI;
+  NSString *resultAsString = [NSString stringWithFormat:@"%f", result];
+  [debugLabel setText:resultAsString];
+  return result;
+}
+
+#pragma mark - Lifecycle
 
 - (void)initTexture
 {
