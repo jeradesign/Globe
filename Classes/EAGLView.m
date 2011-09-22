@@ -282,7 +282,7 @@ static int drag_direction;
   last_touch_location = [touch locationInView:self];
   CGPoint currentTouchPosition = [touch locationInView:self];
   rotation = [self rotationFromBase:CENTER_X toOffset:currentTouchPosition.x];
-  rotation = starting_rotation - starting_rotation_offset;
+  rotation += starting_rotation - starting_rotation_offset;
   tilt = [self rotationFromBase:CENTER_Y toOffset:currentTouchPosition.y];
   tilt += starting_tilt - starting_tilt_offset;
 }
