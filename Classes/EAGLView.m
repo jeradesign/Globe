@@ -22,7 +22,12 @@
 
 #define RADIUS 160.0
 #define CENTER_X 160.0
+#define CENTER_Y 240.0
 #define FLICK_SPEED_THRESHOLD 200.0
+
+#define DRAG_UNDECIDED 0
+#define DRAG_HORIZONTAL 1
+#define DRAG_VERTICAL 2
 
 static double rotation = INITIAL_ROTATION;
 static double rotation_inc = 1;
@@ -30,10 +35,16 @@ static double tilt_inc = 0.0;
 
 static double starting_rotation = 0.0;
 static double starting_rotation_offset = 0.0;
+
+static double starting_tilt = 0.0;
+static double starting_tilt_offset = 0.0;
+
 static NSTimeInterval last_touch_time;
 static CGPoint last_touch_location;
 
 static CGPoint startTouchPosition;
+
+static int drag_direction;
 
 // A class extension to declare private methods
 @interface EAGLView ()
@@ -257,6 +268,10 @@ static CGPoint startTouchPosition;
   rotation_inc = 0.0;
   starting_rotation = rotation;
   starting_rotation_offset = [self rotationFromBase:CENTER_X toOffset:startTouchPosition.x];
+  tilt_inc = 0.0;
+  starting_tilt = tilt;
+  starting_tilt_offset = [self rotationFromBase:CENTER_Y toOffset:startTouchPosition.y];
+  drag_direction = DRAG_UNDECIDED;
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -267,7 +282,9 @@ static CGPoint startTouchPosition;
   last_touch_location = [touch locationInView:self];
   CGPoint currentTouchPosition = [touch locationInView:self];
   rotation = [self rotationFromBase:CENTER_X toOffset:currentTouchPosition.x];
-  rotation += starting_rotation - starting_rotation_offset;
+  rotation = starting_rotation - starting_rotation_offset;
+  tilt = [self rotationFromBase:CENTER_Y toOffset:currentTouchPosition.y];
+  tilt += starting_tilt - starting_tilt_offset;
 }
 
 - (double)speedForTouch:(UITouch *)touch {
@@ -296,17 +313,8 @@ static CGPoint startTouchPosition;
   debugLabel.text = @"flicked";
   NSLog(@"flicked");
   double currentX = [touch locationInView:self].x;
-  if (isnan(currentX)) {
-    NSLog(@"isnan(currentX)");
-  }
   double previousX = last_touch_location.x;
-  if (isnan(previousX)) {
-    NSLog(@"isnan(previousX)");
-  }
   double deltaAngle = [self rotationFromBase:previousX toOffset:currentX];
-  if (isnan(deltaAngle)) {
-    NSLog(@"isnan(deltaAngle)");
-  }
   double deltaT = touch.timestamp - last_touch_time;
   rotation_inc = (deltaAngle / deltaT) * animationInterval;
 //  NSLog(@"deltaAngle = %f, deltaT = %f, rotation_inc = %f", deltaAngle, deltaT, rotation_inc);
@@ -318,7 +326,14 @@ static CGPoint startTouchPosition;
 }
 
 - (double)rotationFromBase:(double)base toOffset:(double)offset {
-  double result = asin((offset - base) / RADIUS);
+  double numer = offset - base;
+  if (numer > RADIUS) {
+    numer = RADIUS;
+  } else if (numer < -RADIUS) {
+    numer = -RADIUS;
+  }
+  double result = asin(numer / RADIUS);
+  NSLog(@"%s, %f, %f, %f", __PRETTY_FUNCTION__, base, offset, result);
   if (isnan(result)) {
     NSLog(@"%s isnan(result)", __PRETTY_FUNCTION__);
     result = 0;
