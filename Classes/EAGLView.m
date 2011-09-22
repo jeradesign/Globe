@@ -104,8 +104,17 @@ static int drag_direction;
 - (void)drawView {
   
   rotation += rotation_inc;
+  rotation = fmod(rotation, 360.0);
+  if (rotation < 0) {
+    rotation += 360.0;
+  }
   tilt += tilt_inc;
-  
+  tilt = fmod(tilt, 360.0);
+  if (tilt < 0) {
+    tilt += 360.0;
+  }
+
+  debugLabel.text = [NSString stringWithFormat:@"%010.6f, %010.6f", rotation, tilt];
   [EAGLContext setCurrentContext:context];
   
   glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
@@ -169,6 +178,7 @@ static int drag_direction;
   
   glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
   [context presentRenderbuffer:GL_RENDERBUFFER_OES];
+
   GLenum error = glGetError();
   if (error) {
     NSLog(@"OpenGL error # %04x", error);
@@ -312,11 +322,11 @@ static int drag_direction;
   [self logMessage:__PRETTY_FUNCTION__ withTouch:touch];
   double speed = [self speedForTouch:touch];
   if(speed < FLICK_SPEED_THRESHOLD) {
-    debugLabel.text = @"not flicked";
+//    debugLabel.text = @"not flicked";
 //    NSLog(@"not flicked");
     return;
   }
-  debugLabel.text = @"flicked";
+//  debugLabel.text = @"flicked";
 //  NSLog(@"flicked");
   double currentX = [touch locationInView:self].x;
   double previousX = last_touch_location.x;
@@ -344,8 +354,8 @@ static int drag_direction;
     NSLog(@"%s, isnan(%f), %f, %f", __PRETTY_FUNCTION__, result, base, offset);
     result = 0;
   }
-  NSString *resultAsString = [NSString stringWithFormat:@"%f", result];
-  [debugLabel setText:resultAsString];
+//  NSString *resultAsString = [NSString stringWithFormat:@"%f", result];
+//  [debugLabel setText:resultAsString];
   return result;
 }
 
