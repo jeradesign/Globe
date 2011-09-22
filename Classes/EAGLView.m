@@ -91,6 +91,8 @@ static int drag_direction;
       return nil;
     }
     
+    tilt = INITIAL_TILT;
+    
     animationInterval = 1.0 / 60.0;
     generateGlobeVertexArrays();
     [self initTexture];
@@ -167,6 +169,10 @@ static int drag_direction;
   
   glBindRenderbufferOES(GL_RENDERBUFFER_OES, viewRenderbuffer);
   [context presentRenderbuffer:GL_RENDERBUFFER_OES];
+  GLenum error = glGetError();
+  if (error) {
+    NSLog(@"OpenGL error # %04x", error);
+  }
 }
 
 
@@ -311,7 +317,7 @@ static int drag_direction;
     return;
   }
   debugLabel.text = @"flicked";
-  NSLog(@"flicked");
+//  NSLog(@"flicked");
   double currentX = [touch locationInView:self].x;
   double previousX = last_touch_location.x;
   double deltaAngle = [self rotationFromBase:previousX toOffset:currentX];
@@ -333,12 +339,11 @@ static int drag_direction;
     numer = -RADIUS;
   }
   double result = asin(numer / RADIUS);
-  NSLog(@"%s, %f, %f, %f", __PRETTY_FUNCTION__, base, offset, result);
+  result *= 180.0 / M_PI;
   if (isnan(result)) {
-    NSLog(@"%s isnan(result)", __PRETTY_FUNCTION__);
+    NSLog(@"%s, isnan(%f), %f, %f", __PRETTY_FUNCTION__, result, base, offset);
     result = 0;
   }
-  result *= 180.0 / M_PI;
   NSString *resultAsString = [NSString stringWithFormat:@"%f", result];
   [debugLabel setText:resultAsString];
   return result;
