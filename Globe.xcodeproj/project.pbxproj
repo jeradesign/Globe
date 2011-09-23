@@ -19,6 +19,7 @@
 		4205A0780DFE05EA001BA716 /* tinyworld4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4205A0770DFE05EA001BA716 /* tinyworld4.png */; };
 		4205A0890DFE065B001BA716 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4205A0880DFE065B001BA716 /* Default.png */; };
 		422D7C0513B9C19D006757A1 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 422D7C0413B9C19D006757A1 /* Icon@2x.png */; };
+		423DB1FC142C0FEF00492D40 /* Globe.oo3 in Resources */ = {isa = PBXBuildFile; fileRef = 423DB1FB142C0FEF00492D40 /* Globe.oo3 */; };
 		429000F313B32E7D000D0C57 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 429000F213B32E7D000D0C57 /* Entitlements.plist */; };
 		429D3DEE0DFA0174003B2F1C /* drawglobe.c in Sources */ = {isa = PBXBuildFile; fileRef = 429D3DE80DFA0174003B2F1C /* drawglobe.c */; };
 		429D3DF00DFA0174003B2F1C /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 429D3DEC0DFA0174003B2F1C /* Icon.png */; };
@@ -43,6 +44,7 @@
 		4205A0770DFE05EA001BA716 /* tinyworld4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tinyworld4.png; sourceTree = "<group>"; };
 		4205A0880DFE065B001BA716 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		422D7C0413B9C19D006757A1 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		423DB1FB142C0FEF00492D40 /* Globe.oo3 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Globe.oo3; sourceTree = "<group>"; };
 		429000F213B32E7D000D0C57 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		429D3DE80DFA0174003B2F1C /* drawglobe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drawglobe.c; sourceTree = "<group>"; };
 		429D3DE90DFA0174003B2F1C /* drawglobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drawglobe.h; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				423DB1FB142C0FEF00492D40 /* Globe.oo3 */,
 				42B10AB113BA81AC00A7E85E /* Default@2x.png */,
 				422D7C0413B9C19D006757A1 /* Icon@2x.png */,
 				4205A0880DFE065B001BA716 /* Default.png */,
@@ -196,6 +199,7 @@
 				429000F313B32E7D000D0C57 /* Entitlements.plist in Resources */,
 				422D7C0513B9C19D006757A1 /* Icon@2x.png in Resources */,
 				42B10AB213BA81AC00A7E85E /* Default@2x.png in Resources */,
+				423DB1FC142C0FEF00492D40 /* Globe.oo3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

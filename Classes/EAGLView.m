@@ -19,9 +19,11 @@
 
 #define USE_DEPTH_BUFFER 0
 #define USE_LIGHTING 1
+#define DARK_SIDE_BRIGHTNESS 0.0
 
 #define RADIUS 160.0
 #define CENTER_X 160.0
+#define MAX_X 320.0
 #define CENTER_Y 240.0
 #define FLICK_SPEED_THRESHOLD 200.0
 
@@ -144,7 +146,7 @@ static int drag_direction;
   front[1] = sunPosition[1];
   front[2] = sunPosition[2];
   
-  GLfloat lmodel_ambient[] = { 0.17, 0.17, 0.17, 1.0 };
+  GLfloat lmodel_ambient[] = { DARK_SIDE_BRIGHTNESS, DARK_SIDE_BRIGHTNESS, DARK_SIDE_BRIGHTNESS, 1.0 };
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
   
   glEnable(GL_LIGHT0);
@@ -274,6 +276,13 @@ static int drag_direction;
 //  NSLog(@"%s: %f, (%f, %f)", message, touch.timestamp, location.x, location.y);
 }
 
+- (double)reverseXIfNeeded:(double) x {
+  if (true) {
+    x = MAX_X - x;
+  }
+  return x;
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
   UITouch *touch = [touches anyObject];
@@ -283,7 +292,9 @@ static int drag_direction;
   startTouchPosition = [touch locationInView:self];
   rotation_inc = 0.0;
   starting_rotation = rotation;
-  starting_rotation_offset = [self rotationFromBase:CENTER_X toOffset:startTouchPosition.x];
+  double x = startTouchPosition.x;
+  x = [self reverseXIfNeeded:x];
+  starting_rotation_offset = [self rotationFromBase:CENTER_X toOffset:x];
   tilt_inc = 0.0;
   starting_tilt = tilt;
   starting_tilt_offset = [self rotationFromBase:CENTER_Y toOffset:startTouchPosition.y];
@@ -297,7 +308,9 @@ static int drag_direction;
   last_touch_time = touch.timestamp;
   last_touch_location = [touch locationInView:self];
   CGPoint currentTouchPosition = [touch locationInView:self];
-  rotation = [self rotationFromBase:CENTER_X toOffset:currentTouchPosition.x];
+  double x = currentTouchPosition.x;
+  x = [self reverseXIfNeeded:x];
+  rotation = [self rotationFromBase:CENTER_X toOffset:x];
   rotation += starting_rotation - starting_rotation_offset;
   tilt = [self rotationFromBase:CENTER_Y toOffset:currentTouchPosition.y];
   tilt += starting_tilt - starting_tilt_offset;
@@ -329,7 +342,9 @@ static int drag_direction;
 //  debugLabel.text = @"flicked";
 //  NSLog(@"flicked");
   double currentX = [touch locationInView:self].x;
+  currentX = [self reverseXIfNeeded:currentX];
   double previousX = last_touch_location.x;
+  previousX = [self reverseXIfNeeded:previousX];
   double deltaAngle = [self rotationFromBase:previousX toOffset:currentX];
   double deltaT = touch.timestamp - last_touch_time;
   rotation_inc = (deltaAngle / deltaT) * animationInterval;
