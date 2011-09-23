@@ -9,10 +9,14 @@
 #include "sun_position.h"
 #include <CoreFoundation/CoreFoundation.h>
 
-// Vernal equinox 3/20/2011 1:16pm
-// Summer solstice 6/21/2011 1:10pm
-// Autumnal equinox 9/23/2011 1:01pm
-// Winter solstice 12/22/2011 12:06pm
+// Vernal equinox 3/20/2011 1:16pm PDT
+CFGregorianDate vernal_equinox = { 2011, 3, 20, 20, 16, 0.0 };
+// Summer solstice 6/21/2011 1:10pm PDT
+CFGregorianDate summer_solstice = { 2011, 6, 21, 20, 10, 0.0 };
+// Autumnal equinox 9/23/2011 1:01pm PDT
+CFGregorianDate autumnal_equinox = { 2011, 9, 23, 20, 01, 0.0 };
+// Winter solstice 12/22/2011 12:06pm PST
+CFGregorianDate winter_solstice = { 2011, 12, 22, 20, 06, 0.0 };
 
 #define SECONDS_PER_YEAR (60.0 * 60.0 * 24.0 * 365.242191)
 #define PI 3.141592653589793
@@ -63,6 +67,7 @@ static double sidereal_time(CFAbsoluteTime time) {
 
 void sun_position(float positionVector[3]) {
   CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
+//  CFAbsoluteTime now = CFGregorianDateGetAbsoluteTime(summer_solstice, NULL);
   
   CFGregorianDate gdate;
   
