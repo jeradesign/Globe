@@ -19,7 +19,7 @@
 
 #define USE_DEPTH_BUFFER 0
 #define USE_LIGHTING 1
-#define DARK_SIDE_BRIGHTNESS 0.0
+#define DARK_SIDE_BRIGHTNESS 0.13
 
 #define RADIUS 160.0
 #define CENTER_X 160.0
@@ -30,6 +30,9 @@
 #define DRAG_UNDECIDED 0
 #define DRAG_HORIZONTAL 1
 #define DRAG_VERTICAL 2
+
+#define TO_DEGREES (180.0 / M_PI)
+#define TO_RADIANS (M_PI / 180.0)
 
 static double rotation = INITIAL_ROTATION;
 static double rotation_inc = 1;
@@ -47,6 +50,8 @@ static CGPoint last_touch_location;
 static CGPoint startTouchPosition;
 
 static int drag_direction;
+
+static bool reverse_rotation = NO;
 
 // A class extension to declare private methods
 @interface EAGLView ()
@@ -116,7 +121,7 @@ static int drag_direction;
     tilt += 360.0;
   }
 
-  debugLabel.text = [NSString stringWithFormat:@"%010.6f, %010.6f", rotation, tilt];
+//  debugLabel.text = [NSString stringWithFormat:@"%010.6f, %010.6f", rotation, tilt];
   [EAGLContext setCurrentContext:context];
   
   glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
@@ -277,10 +282,33 @@ static int drag_direction;
 }
 
 - (double)reverseXIfNeeded:(double) x {
-  if (true) {
+  if (reverse_rotation) {
     x = MAX_X - x;
   }
   return x;
+}
+
+- (BOOL)shouldReverse:(CGPoint) position {
+  
+  // don't do pole test if almost rightside up or upside down.
+  if (tilt <= 30.0 || tilt >= 330.0) {
+    return NO;
+  }
+  if (tilt >= 150.0 && tilt <= 210.0) {
+    return YES;
+  }
+  
+  BOOL northPoleVisible = sin(tilt * TO_RADIANS) > 0;
+  
+  if (northPoleVisible) {
+    double northPolePosition = -cos(tilt * TO_RADIANS) * RADIUS + CENTER_Y;
+//    debugLabel.text = [NSString stringWithFormat:@"^ tilt: %-5.1f, nPP: %-5.1f, y: %-5.1f", tilt, northPolePosition, position.y];
+    return position.y < northPolePosition;
+  } else {
+    double southPolePosition = cos(tilt * TO_RADIANS) * RADIUS + CENTER_Y;
+//    debugLabel.text = [NSString stringWithFormat:@"V tilt: %-5.1f, sPP: %-5.1f, y: %-5.1f", tilt, southPolePosition, position.y];
+    return position.y > southPolePosition;
+  }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -290,6 +318,9 @@ static int drag_direction;
   last_touch_time = touch.timestamp;
   last_touch_location = [touch locationInView:self];
   startTouchPosition = [touch locationInView:self];
+  
+  reverse_rotation = [self shouldReverse:startTouchPosition];
+  
   rotation_inc = 0.0;
   starting_rotation = rotation;
   double x = startTouchPosition.x;
@@ -308,12 +339,18 @@ static int drag_direction;
   last_touch_time = touch.timestamp;
   last_touch_location = [touch locationInView:self];
   CGPoint currentTouchPosition = [touch locationInView:self];
+  
   double x = currentTouchPosition.x;
   x = [self reverseXIfNeeded:x];
   rotation = [self rotationFromBase:CENTER_X toOffset:x];
   rotation += starting_rotation - starting_rotation_offset;
   tilt = [self rotationFromBase:CENTER_Y toOffset:currentTouchPosition.y];
   tilt += starting_tilt - starting_tilt_offset;
+  fmod(tilt, 360.0);
+  if(tilt < 0) {
+    tilt += 360.0;
+  }
+  debugLabel.text = [NSString stringWithFormat:@"tilt: %-5.1f", tilt];
 }
 
 - (double)speedForTouch:(UITouch *)touch {
@@ -347,6 +384,9 @@ static int drag_direction;
   previousX = [self reverseXIfNeeded:previousX];
   double deltaAngle = [self rotationFromBase:previousX toOffset:currentX];
   double deltaT = touch.timestamp - last_touch_time;
+  if (deltaT <= 0.0) {
+    deltaT = 1.0 / 60.0;
+  }
   rotation_inc = (deltaAngle / deltaT) * animationInterval;
 //  NSLog(@"deltaAngle = %f, deltaT = %f, rotation_inc = %f", deltaAngle, deltaT, rotation_inc);
 }
@@ -364,7 +404,7 @@ static int drag_direction;
     numer = -RADIUS;
   }
   double result = asin(numer / RADIUS);
-  result *= 180.0 / M_PI;
+  result *= TO_DEGREES;
   if (isnan(result)) {
     NSLog(@"%s, isnan(%f), %f, %f", __PRETTY_FUNCTION__, result, base, offset);
     result = 0;
