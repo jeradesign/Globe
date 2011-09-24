@@ -17,9 +17,39 @@ CFGregorianDate summer_solstice = { 2011, 6, 21, 20, 10, 0.0 };
 CFGregorianDate autumnal_equinox = { 2011, 9, 23, 20, 01, 0.0 };
 // Winter solstice 12/22/2011 12:06pm PST
 CFGregorianDate winter_solstice = { 2011, 12, 22, 20, 06, 0.0 };
+// 3rd edition test data 7/27/1980 midnight UTC
+CFGregorianDate test_3rd_edition = { 1980, 7, 27, 0, 0, 0.0 };
+// 4th edition test data 7/27/2003 midnight UTC
+CFGregorianDate test_4th_edition = { 2003, 7, 27, 0, 0, 0.0 };
 
+#define SECONDS_PER_DAY (60.0 * 60.0 * 24.0);
 #define SECONDS_PER_YEAR (60.0 * 60.0 * 24.0 * 365.242191)
-#define PI 3.141592653589793
+#define DAYS_PER_YEAR 365.242191
+
+#define TO_RADIANS (M_PI / 180.0)
+#define TO_DEGREES (180.0 / M_PI)
+
+#define EPOCH_YEAR 1990
+
+#if (EPOCH_YEAR == 1990)
+#define JDepoch 2447891.5
+#define eg 279.403303
+#define wg 282.768422
+#define e 0.016713
+CFGregorianDate epoch_date = { 1989, 12, 31, 0, 0, 0.0 };
+#elif (EPOCH_YEAR == 2010)
+#error Not yet defined!
+#else
+#error EPOCH_YEAR not valid!
+#endif
+
+static double normalize360(double angle) {
+  angle = fmod(angle, 360.0);
+  if (angle < 0) {
+    angle += 360.0;
+  }
+  return angle;
+}
 
 static double julean_date(int year, int month, double day) {
   if ((month == 1) || (month == 2)) {
@@ -36,16 +66,10 @@ static double julean_date(int year, int month, double day) {
 
 static double sidereal_time(CFAbsoluteTime time) {
   CFGregorianDate gdate = CFAbsoluteTimeGetGregorianDate(time, NULL);
-//  CFGregorianDate gdate;
-//  gdate.year = 1980;
-//  gdate.month = 4;
-//  gdate.day = 22;
-//  gdate.hour = 14;
-//  gdate.minute = 36;
-//  gdate.second = 51.67;
+//  CFGregorianDate gdate = { 1980, 4, 22, 14, 36, 51.67 };
 
-  double jd = julean_date(gdate.year, gdate.month, gdate.day);
-  double S = jd - 2451545.0;
+  double JD = julean_date(gdate.year, gdate.month, gdate.day);
+  double S = JD - 2451545.0;
   double T = S / 36525.0;
   double T0 = 6.697374558 + (2400.051336 * T) + (0.000025862 * T * T);
   while (T0 < 0) {
@@ -67,59 +91,40 @@ static double sidereal_time(CFAbsoluteTime time) {
 
 void sun_position(float positionVector[3]) {
   CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
-//  CFAbsoluteTime now = CFGregorianDateGetAbsoluteTime(summer_solstice, NULL);
+//  CFAbsoluteTime now = CFGregorianDateGetAbsoluteTime(winter_solstice, NULL);
   
-  CFGregorianDate gdate;
+  CFAbsoluteTime epoch = CFGregorianDateGetAbsoluteTime(epoch_date, NULL);
   
-//  gdate.year = 2011;
-//  gdate.month = 12;
-//  gdate.day = 22;
-//  gdate.hour = 6;
-//  gdate.minute = 0;
-//  gdate.second = 0.0;
-//  now = CFGregorianDateGetAbsoluteTime(gdate, NULL);
+  CFTimeInterval seconds = now - epoch;
+  double D = seconds / SECONDS_PER_DAY;
+  double N = 360.0 * D / DAYS_PER_YEAR;
+  N = normalize360(N);
+
+  double Msun = N + eg - wg;
+  Msun = normalize360(Msun);
+
+  double Ec = (360.0 / M_PI) * e * sin(Msun * TO_RADIANS);
   
-  gdate.year = 1989;
-  gdate.month = 12;
-  gdate.day = 31;
-  gdate.hour = 0;
-  gdate.minute = 0;
-  gdate.second = 0.0;
-  CFAbsoluteTime epoch = CFGregorianDateGetAbsoluteTime(gdate, NULL);
   
-  CFTimeInterval delta = now - epoch;
-  double years = delta / SECONDS_PER_YEAR;
-  years = fmod(years, 1);
-//  printf("years = %f\n", years);
+  double lambda = N + Ec + eg;
+  lambda = normalize360(lambda);
+
+  double obliquity = 23.441884;
   
-  double angle = 360.0 * years;
-  angle += 279.403303 - 282.768422;
-  angle += 360.0;
-  angle = fmod(angle, 360.0);
-//  printf("angle = %f\n", angle);
-  double v = angle + (360 / PI) * 0.016713 * sin((2.0 * PI) * (angle / 360.0));
-  v += 282.768422;
-  v = fmod(v, 360.0);
-//  printf("v = %f\n", v);
-  double lambda = (2.0 * PI) * v / 360.0;
-  double obliquity = (2.0 * PI) * 23.441884 / 360.0;
+  double alpha = atan2(sin(lambda * TO_RADIANS)
+                       * cos(obliquity * TO_RADIANS),
+                       cos(lambda * TO_RADIANS)) * TO_DEGREES;
+  double beta = asin(sin(obliquity * TO_RADIANS)
+                     * sin(lambda * TO_RADIANS)) * TO_DEGREES;
   
-  double alpha = atan2(sin(lambda) * cos(obliquity), cos(lambda));
-  double beta = asin(sin(obliquity) * sin(lambda));
-  
-  alpha += 2.0 * PI * sidereal_time(now) / 360.0;
-  alpha += PI / 2;
-//  double alphaDegrees = 360.0 * alpha / (2 * PI);
-//  alpha = 360.0 * alpha / (2.0 * PI);
-//  if (alpha < 0.0) { alpha += 360.0; }
-//  beta = 360.0 * beta / (2.0 * PI);
-//  
-//  printf("alpha = %f\n", alpha);
-//  printf("beta = %f\n", beta);
-  
-  positionVector[0] = cos(alpha);
-  positionVector[2] = sin(alpha);
-  positionVector[1] = sin(beta);
+  double theta = sidereal_time(now);
+  double tau = theta - alpha;
+  tau += 90.0;
+  tau = normalize360(tau);
+
+  positionVector[0] = cos(tau * TO_RADIANS);
+  positionVector[2] = sin(tau * TO_RADIANS);
+  positionVector[1] = sin(beta * TO_RADIANS);
 //  now += 3600;
   return;
 }
