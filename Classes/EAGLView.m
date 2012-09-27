@@ -24,7 +24,9 @@
 #define RADIUS 160.0
 #define CENTER_X 160.0
 #define MAX_X 320.0
-#define CENTER_Y 240.0
+static int CENTER_Y = 240.0;
+static int MAX_Y = 480.0;
+
 #define FLICK_SPEED_THRESHOLD 200.0
 
 #define DRAG_UNDECIDED 0
@@ -84,6 +86,9 @@ static bool reverse_rotation = NO;
 - (id)initWithCoder:(NSCoder*)coder {
   
   if ((self = [super initWithCoder:coder])) {
+    MAX_Y = [[UIScreen mainScreen] bounds].size.height;
+    CENTER_Y = MAX_Y / 2;
+      
     // Get the layer
     CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
     
@@ -97,6 +102,7 @@ static bool reverse_rotation = NO;
       [self release];
       return nil;
     }
+      
     
     tilt = INITIAL_TILT;
     
@@ -126,7 +132,7 @@ static bool reverse_rotation = NO;
   
   glBindFramebufferOES(GL_FRAMEBUFFER_OES, viewFramebuffer);
   //	glViewport(0, 0, backingWidth, backingHeight);
-  glViewport(0, 80, 320, 320);
+  glViewport(0, (MAX_Y - MAX_X) / 2 , 320, 320);
   
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
