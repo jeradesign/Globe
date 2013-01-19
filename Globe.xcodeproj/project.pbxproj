@@ -29,7 +29,7 @@
 
 /* Begin PBXFileReference section */
 		421448FB16AA986900EB0557 /* sun_position.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sun_position.c; sourceTree = SOURCE_ROOT; };
-		421448FC16AA986900EB0557 /* drawglobe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drawglobe.c; sourceTree = SOURCE_ROOT; };
+		421448FC16AA986900EB0557 /* drawglobe.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.c; path = drawglobe.c; sourceTree = SOURCE_ROOT; };
 		421448FD16AA986900EB0557 /* sun_position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sun_position.h; sourceTree = SOURCE_ROOT; };
 		421448FE16AA986900EB0557 /* drawglobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drawglobe.h; sourceTree = SOURCE_ROOT; };
 		421C393D16AA947300651DF1 /* Globe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Globe.app; sourceTree = BUILT_PRODUCTS_DIR; };
