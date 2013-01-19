@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		421448FF16AA986900EB0557 /* sun_position.c in Sources */ = {isa = PBXBuildFile; fileRef = 421448FB16AA986900EB0557 /* sun_position.c */; };
+		4214490016AA986900EB0557 /* drawglobe.c in Sources */ = {isa = PBXBuildFile; fileRef = 421448FC16AA986900EB0557 /* drawglobe.c */; };
 		421C394216AA947300651DF1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 421C394116AA947300651DF1 /* UIKit.framework */; };
 		421C394416AA947300651DF1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 421C394316AA947300651DF1 /* Foundation.framework */; };
 		421C394616AA947300651DF1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 421C394516AA947300651DF1 /* CoreGraphics.framework */; };
@@ -26,6 +28,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		421448FB16AA986900EB0557 /* sun_position.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sun_position.c; sourceTree = SOURCE_ROOT; };
+		421448FC16AA986900EB0557 /* drawglobe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drawglobe.c; sourceTree = SOURCE_ROOT; };
+		421448FD16AA986900EB0557 /* sun_position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sun_position.h; sourceTree = SOURCE_ROOT; };
+		421448FE16AA986900EB0557 /* drawglobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drawglobe.h; sourceTree = SOURCE_ROOT; };
 		421C393D16AA947300651DF1 /* Globe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Globe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		421C394116AA947300651DF1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		421C394316AA947300651DF1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -105,6 +111,10 @@
 				421C396516AA947300651DF1 /* Shader.vsh */,
 				421C396716AA947300651DF1 /* ViewController.h */,
 				421C396816AA947300651DF1 /* ViewController.m */,
+				421448FE16AA986900EB0557 /* drawglobe.h */,
+				421448FC16AA986900EB0557 /* drawglobe.c */,
+				421448FD16AA986900EB0557 /* sun_position.h */,
+				421448FB16AA986900EB0557 /* sun_position.c */,
 				421C394C16AA947300651DF1 /* Supporting Files */,
 			);
 			path = Globe;
@@ -196,6 +206,8 @@
 				421C395216AA947300651DF1 /* main.m in Sources */,
 				421C395616AA947300651DF1 /* AppDelegate.m in Sources */,
 				421C396916AA947300651DF1 /* ViewController.m in Sources */,
+				421448FF16AA986900EB0557 /* sun_position.c in Sources */,
+				4214490016AA986900EB0557 /* drawglobe.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +299,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Globe/Globe-Prefix.pch";
 				INFOPLIST_FILE = "Globe/Globe-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -298,6 +311,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Globe/Globe-Prefix.pch";
 				INFOPLIST_FILE = "Globe/Globe-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -322,6 +336,7 @@
 				421C396E16AA947300651DF1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
