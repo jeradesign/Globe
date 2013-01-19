@@ -6,5 +6,5 @@
  *
  */
 
-void generateGlobeVertexArrays(void);
-void drawGlobeWithVertexArrays(GLuint textureId);
+void generateGlobeVertexArrays(GLuint vertexInd, GLuint normalInd, GLuint tex0Ind, GLuint tex1Ind);
+void drawGlobeWithVertexArrays(void);

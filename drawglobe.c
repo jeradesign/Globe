@@ -6,15 +6,14 @@
  *
  */
 
-// #define DRAW_GUIDES 1
+#define DRAW_GUIDES 0
 
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 
-#import <OpenGLES/ES1/gl.h>
-#import <OpenGLES/ES1/glext.h>
+#import <OpenGLES/ES2/gl.h>
 
 GLubyte* glmReadPPM(char* filename, int* width, int* height);
 
@@ -24,7 +23,6 @@ GLubyte* glmReadPPM(char* filename, int* width, int* height);
 #define PHI_STEPS 50
 //#define THETA_STEPS 4
 //#define PHI_STEPS 3
-#define DRAW_GUIDES 0
 #define ARRAY_LENGTH ((THETA_STEPS + 1) * (PHI_STEPS + 1))
 #define INDEX_LENGTH (3 * ARRAY_LENGTH)
 
@@ -39,8 +37,8 @@ static GLushort indices[INDEX_LENGTH];
 
 static int maxIndex;
 
-void generateGlobeVertexArrays(void) {
-//  printf("before generateGlobeVertexArrays, glGetError = %x\n", glGetError());
+void generateGlobeVertexArrays(GLuint vertexInd, GLuint normalInd, GLuint tex0Ind, GLuint tex1Ind) {
+  printf("before generateGlobeVertexArrays, glGetError = %x\n", glGetError());
   int count = 0;
   float TWO_PI = 2.0 * M_PI;
   float a;
@@ -63,16 +61,15 @@ void generateGlobeVertexArrays(void) {
       ++count;
     }
   }
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  glEnableClientState(GL_NORMAL_ARRAY);
-//  printf("after glEnableClientState, glGetError = %x\n", glGetError());
+  printf("after glEnableClientState, glGetError = %x\n", glGetError());
   
-  glVertexPointer(3, GL_FLOAT, 0, vertices);
-//  printf("after glVertexPointer, glGetError = %x\n", glGetError());
-  glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
-//  printf("after glTexCoordPointer, glGetError = %x\n", glGetError());
-  glNormalPointer(GL_FLOAT, 0, normals);
+  glVertexAttribPointer(vertexInd, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+  printf("after vertexInd, glGetError = %x\n", glGetError());
+  glVertexAttribPointer(normalInd, 3, GL_FLOAT, GL_FALSE, 0, normals);
+  printf("after normalInd, glGetError = %x\n", glGetError());
+  glVertexAttribPointer(tex0Ind, 2, GL_FLOAT, GL_FALSE, 0, texCoords);
+  printf("after tex0Ind, glGetError = %x\n", glGetError());
+
   int i;
   count = 0;
   for (i = 0; i < ARRAY_LENGTH; i++) {
@@ -98,26 +95,21 @@ void generateGlobeVertexArrays(void) {
   }
   
   maxIndex = count;
-//  printf("after generateGlobeVertexArrays, glGetError = %x\n", glGetError());
+  printf("after generateGlobeVertexArrays, glGetError = %x\n", glGetError());
 }
 
-void drawGlobeWithVertexArrays(GLuint textureId) {
-  glEnable(GL_TEXTURE_2D);
+void drawGlobeWithVertexArrays(void) {
   glEnable(GL_CULL_FACE);
-  glEnable(GL_COLOR_MATERIAL);
-//  glMaterialf(GL_FRONT, GL_SHININESS, 128.0);
-//  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-//  glEnable(GL_FOG);
-  glBindTexture(GL_TEXTURE_2D, textureId);
-  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   
-//  printf("before glDrawElements, glGetError = %x\n", glGetError());
+  printf("before glDrawElements, glGetError = %x\n", glGetError());
+  glEnableVertexAttribArray ( 0 );
+  glEnableVertexAttribArray ( 1 );
+  glEnableVertexAttribArray ( 2 );
+  glEnableVertexAttribArray ( 3 );
   glDrawElements(GL_TRIANGLE_STRIP, maxIndex, GL_UNSIGNED_SHORT, indices);
 #if DRAW_GUIDES
-  glDisable(GL_TEXTURE_2D);
-  glDisable(GL_LIGHTING);
   glDrawElements(GL_POINTS, ARRAY_LENGTH, GL_UNSIGNED_SHORT, pointIndices);
   glDrawElements(GL_LINE_STRIP, PHI_STEPS + 1, GL_UNSIGNED_SHORT, lineIndices);
 #endif // DRAW_GUIDES
-//  printf("after glDrawElements, glGetError = %x\n", glGetError());
+  printf("after glDrawElements, glGetError = %x\n", glGetError());
 }
