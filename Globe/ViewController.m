@@ -86,6 +86,8 @@ GLfloat gCubeVertexData[216] =
     
 //    GLuint _vertexArray;
 //    GLuint _vertexBuffer;
+    GLKTextureInfo *_texture;
+    GLuint _samplerLoc;
 }
 @property (strong, nonatomic) EAGLContext *context;
 @property (strong, nonatomic) GLKBaseEffect *effect;
@@ -172,6 +174,17 @@ GLfloat gCubeVertexData[216] =
 //    
 //    glBindVertexArrayOES(0);
     
+    NSString *texturePath = [[NSBundle mainBundle] pathForResource:@"tinyworld4" ofType:@"png"];
+    NSError *error;
+    _texture = [GLKTextureLoader textureWithContentsOfFile:texturePath options:nil error:&error];
+    if (error != nil) {
+        NSLog(@"%@", error);
+    }
+
+    self.effect.texture2d0.envMode = GLKTextureEnvModeReplace;
+    self.effect.texture2d0.target = GLKTextureTarget2D;
+    self.effect.texture2d0.name = _texture.name;
+    
     generateGlobeVertexArrays(ATTRIB_VERTEX, ATTRIB_NORMAL, ATTRIB_TEX0, ATTRIB_TEX1);
 }
 
@@ -226,13 +239,13 @@ GLfloat gCubeVertexData[216] =
     glClearColor(0.65f, 0.65f, 0.65f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-//    glBindVertexArrayOES(_vertexArray);
-    
-    // Render the object with GLKit
-    [self.effect prepareToDraw];
-    
-//    glDrawArrays(GL_TRIANGLES, 0, 36);
-    drawGlobeWithVertexArrays();
+////    glBindVertexArrayOES(_vertexArray);
+//    
+//    // Render the object with GLKit
+//    [self.effect prepareToDraw];
+//    
+////    glDrawArrays(GL_TRIANGLES, 0, 36);
+//    drawGlobeWithVertexArrays();
     
     // Render the object again with ES2
     glUseProgram(_program);
@@ -241,6 +254,9 @@ GLfloat gCubeVertexData[216] =
     glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _normalMatrix.m);
     
 //    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glActiveTexture ( GL_TEXTURE0 );
+    glBindTexture(GL_TEXTURE_2D, _texture.name);
+    glUniform1i(_samplerLoc, 0);
     drawGlobeWithVertexArrays();
 }
 
@@ -302,6 +318,7 @@ GLfloat gCubeVertexData[216] =
     // Get uniform locations.
     uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_program, "modelViewProjectionMatrix");
     uniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_program, "normalMatrix");
+    _samplerLoc = glGetUniformLocation(_program, "s_texture");
     
     // Release vertex and fragment shaders.
     if (vertShader) {

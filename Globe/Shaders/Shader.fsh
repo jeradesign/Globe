@@ -6,9 +6,12 @@
 //  Copyright (c) 2013 Jera Design LLC. All rights reserved.
 //
 
-varying lowp vec4 colorVarying;
+varying lowp vec2 v_texCoord;
+varying lowp float nDotVP;
+
+uniform sampler2D s_texture;
 
 void main()
 {
-    gl_FragColor = colorVarying;
+    gl_FragColor = texture2D(s_texture, v_texCoord) * nDotVP;
 }

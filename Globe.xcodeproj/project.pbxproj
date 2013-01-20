@@ -25,6 +25,7 @@
 		421C396416AA947300651DF1 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 421C396316AA947300651DF1 /* Shader.fsh */; };
 		421C396616AA947300651DF1 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 421C396516AA947300651DF1 /* Shader.vsh */; };
 		421C396916AA947300651DF1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 421C396816AA947300651DF1 /* ViewController.m */; };
+		4223FD3716AB709B0031543C /* tinyworld4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4223FD3616AB709B0031543C /* tinyworld4.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		421C396516AA947300651DF1 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
 		421C396716AA947300651DF1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		421C396816AA947300651DF1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		4223FD3616AB709B0031543C /* tinyworld4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tinyworld4.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,8 +109,8 @@
 				421C395516AA947300651DF1 /* AppDelegate.m */,
 				421C395D16AA947300651DF1 /* MainStoryboard_iPhone.storyboard */,
 				421C396016AA947300651DF1 /* MainStoryboard_iPad.storyboard */,
-				421C396316AA947300651DF1 /* Shader.fsh */,
 				421C396516AA947300651DF1 /* Shader.vsh */,
+				421C396316AA947300651DF1 /* Shader.fsh */,
 				421C396716AA947300651DF1 /* ViewController.h */,
 				421C396816AA947300651DF1 /* ViewController.m */,
 				421448FE16AA986900EB0557 /* drawglobe.h */,
@@ -123,6 +125,7 @@
 		421C394C16AA947300651DF1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4223FD3616AB709B0031543C /* tinyworld4.png */,
 				421C394D16AA947300651DF1 /* Globe-Info.plist */,
 				421C394E16AA947300651DF1 /* InfoPlist.strings */,
 				421C395116AA947300651DF1 /* main.m */,
@@ -193,6 +196,7 @@
 				421C396216AA947300651DF1 /* MainStoryboard_iPad.storyboard in Resources */,
 				421C396416AA947300651DF1 /* Shader.fsh in Resources */,
 				421C396616AA947300651DF1 /* Shader.vsh in Resources */,
+				4223FD3716AB709B0031543C /* tinyworld4.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
