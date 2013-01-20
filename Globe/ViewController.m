@@ -26,7 +26,6 @@ enum
     ATTRIB_VERTEX,
     ATTRIB_NORMAL,
     ATTRIB_TEX0,
-    ATTRIB_TEX1,
     NUM_ATTRIBUTES
 };
 
@@ -185,7 +184,7 @@ GLfloat gCubeVertexData[216] =
     self.effect.texture2d0.target = GLKTextureTarget2D;
     self.effect.texture2d0.name = _texture.name;
     
-    generateGlobeVertexArrays(ATTRIB_VERTEX, ATTRIB_NORMAL, ATTRIB_TEX0, ATTRIB_TEX1);
+    generateGlobeVertexArrays(ATTRIB_VERTEX, ATTRIB_NORMAL, ATTRIB_TEX0);
 }
 
 - (void)tearDownGL

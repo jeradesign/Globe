@@ -37,7 +37,7 @@ static GLushort indices[INDEX_LENGTH];
 
 static int maxIndex;
 
-void generateGlobeVertexArrays(GLuint vertexInd, GLuint normalInd, GLuint tex0Ind, GLuint tex1Ind) {
+void generateGlobeVertexArrays(GLuint vertexInd, GLuint normalInd, GLuint tex0Ind) {
   printf("before generateGlobeVertexArrays, glGetError = %x\n", glGetError());
   int count = 0;
   float TWO_PI = 2.0 * M_PI;
