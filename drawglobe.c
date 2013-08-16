@@ -101,7 +101,10 @@ void generateGlobeVertexArrays(GLuint vertexInd, GLuint normalInd, GLuint tex0In
 void drawGlobeWithVertexArrays(void) {
   glEnable(GL_CULL_FACE);
   
-  printf("before glDrawElements, glGetError = %x\n", glGetError());
+  GLenum error = glGetError();
+  if (error) {
+    printf("before glDrawElements, glGetError = %x\n", error);
+  }
   glEnableVertexAttribArray ( 0 );
   glEnableVertexAttribArray ( 1 );
   glEnableVertexAttribArray ( 2 );
@@ -111,5 +114,8 @@ void drawGlobeWithVertexArrays(void) {
   glDrawElements(GL_POINTS, ARRAY_LENGTH, GL_UNSIGNED_SHORT, pointIndices);
   glDrawElements(GL_LINE_STRIP, PHI_STEPS + 1, GL_UNSIGNED_SHORT, lineIndices);
 #endif // DRAW_GUIDES
-  printf("after glDrawElements, glGetError = %x\n", glGetError());
+  error = glGetError();
+  if (error) {
+    printf("after glDrawElements, glGetError = %x\n", error);
+  }
 }
