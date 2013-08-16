@@ -26,6 +26,7 @@
 		421C396616AA947300651DF1 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 421C396516AA947300651DF1 /* Shader.vsh */; };
 		421C396916AA947300651DF1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 421C396816AA947300651DF1 /* ViewController.m */; };
 		4223FD3716AB709B0031543C /* tinyworld4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4223FD3616AB709B0031543C /* tinyworld4.png */; };
+		4236830317BE223200B4965C /* GlobeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4236830217BE223200B4965C /* GlobeView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,8 @@
 		421C396716AA947300651DF1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		421C396816AA947300651DF1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		4223FD3616AB709B0031543C /* tinyworld4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tinyworld4.png; sourceTree = SOURCE_ROOT; };
+		4236830117BE223200B4965C /* GlobeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobeView.h; sourceTree = "<group>"; };
+		4236830217BE223200B4965C /* GlobeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobeView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +116,8 @@
 				421C396316AA947300651DF1 /* Shader.fsh */,
 				421C396716AA947300651DF1 /* ViewController.h */,
 				421C396816AA947300651DF1 /* ViewController.m */,
+				4236830117BE223200B4965C /* GlobeView.h */,
+				4236830217BE223200B4965C /* GlobeView.m */,
 				421448FE16AA986900EB0557 /* drawglobe.h */,
 				421448FC16AA986900EB0557 /* drawglobe.c */,
 				421448FD16AA986900EB0557 /* sun_position.h */,
@@ -212,6 +217,7 @@
 				421C396916AA947300651DF1 /* ViewController.m in Sources */,
 				421448FF16AA986900EB0557 /* sun_position.c in Sources */,
 				4214490016AA986900EB0557 /* drawglobe.c in Sources */,
+				4236830317BE223200B4965C /* GlobeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
