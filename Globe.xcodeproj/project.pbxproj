@@ -58,6 +58,8 @@
 		4223FD3616AB709B0031543C /* tinyworld4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tinyworld4.png; sourceTree = SOURCE_ROOT; };
 		4236830117BE223200B4965C /* GlobeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobeView.h; sourceTree = "<group>"; };
 		4236830217BE223200B4965C /* GlobeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobeView.m; sourceTree = "<group>"; };
+		4236830417BE247000B4965C /* EAGLView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = EAGLView.m; path = Classes/EAGLView.m; sourceTree = SOURCE_ROOT; };
+		4236830517BE247000B4965C /* EAGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EAGLView.h; path = Classes/EAGLView.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,8 @@
 				421C396316AA947300651DF1 /* Shader.fsh */,
 				421C396716AA947300651DF1 /* ViewController.h */,
 				421C396816AA947300651DF1 /* ViewController.m */,
+				4236830517BE247000B4965C /* EAGLView.h */,
+				4236830417BE247000B4965C /* EAGLView.m */,
 				4236830117BE223200B4965C /* GlobeView.h */,
 				4236830217BE223200B4965C /* GlobeView.m */,
 				421448FE16AA986900EB0557 /* drawglobe.h */,
