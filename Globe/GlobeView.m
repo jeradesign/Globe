@@ -17,11 +17,11 @@
 #define USE_LIGHTING 1
 #define DARK_SIDE_BRIGHTNESS 0.17
 
-#define RADIUS 160.0
-#define CENTER_X 160.0
-#define MAX_X 320.0
-static int CENTER_Y = 240.0;
-static int MAX_Y = 480.0;
+//#define RADIUS 160.0
+//#define CENTER_X 160.0
+//#define MAX_X 320.0
+//static int CENTER_Y = 240.0;
+//static int MAX_Y = 480.0;
 
 #define FLICK_SPEED_THRESHOLD 200.0
 
@@ -56,6 +56,7 @@ enum
 {
     UNIFORM_MODELVIEWPROJECTION_MATRIX,
     UNIFORM_NORMAL_MATRIX,
+    UNIFORM_LIGHT_POSITION,
     NUM_UNIFORMS
 };
 GLint uniforms[NUM_UNIFORMS];
@@ -90,18 +91,25 @@ enum
 
 - (void)drawRect:(CGRect)rect
 {
+    float aspect = fabsf(self.bounds.size.width / self.bounds.size.height);
+    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
     
-    rotation += rotation_inc;
-    rotation = fmod(rotation, 360.0);
-    if (rotation < 0) {
-        rotation += 360.0;
-    }
-    _tilt += tilt_inc;
-    _tilt = fmod(_tilt, 360.0);
-    if (_tilt < 0) {
-        _tilt += 360.0;
-    }
+    GLKMatrix4 modelViewMatrix;
     
+    // Compute the model view matrix for the object rendered with ES2
+    modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -3.0f);
+    GLKMatrix4 rotationMatrix = GLKMatrix4MakeRotation(TO_RADIANS * _tilt, 1.0f, 0.0f, 0.0f);
+    rotationMatrix = GLKMatrix4Rotate(rotationMatrix, TO_RADIANS * rotation, 0.0f, 1.0f, 0.0f);
+    modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, rotationMatrix);
+    
+    _normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
+    
+    _modelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
+    
+    GLKVector3 sunPosition = { 0.0, 0.0, 0.0 };
+    sun_position(sunPosition.v);
+    sunPosition = GLKMatrix4MultiplyAndProjectVector3(rotationMatrix, sunPosition);
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
@@ -110,6 +118,7 @@ enum
     
     glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewProjectionMatrix.m);
     glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _normalMatrix.m);
+    glUniform3f(uniforms[UNIFORM_LIGHT_POSITION], sunPosition.v[0], sunPosition.v[1], sunPosition.v[2]);
     
     //    glDrawArrays(GL_TRIANGLES, 0, 36);
     glActiveTexture ( GL_TEXTURE0 );
@@ -137,21 +146,7 @@ enum
     if (_tilt < 0) {
         _tilt += 360.0;
     }
-    float aspect = fabsf(self.bounds.size.width / self.bounds.size.height);
-    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
-    
-    GLKMatrix4 modelViewMatrix;
-    
-    // Compute the model view matrix for the object rendered with ES2
-    modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -3.0f);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, TO_RADIANS * _tilt, 1.0f, 0.0f, 0.0f);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, TO_RADIANS * rotation, 0.0f, 1.0f, 0.0f);
-    
-    _normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
-    
-    _modelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
-    
-//    rotation += controller.timeSinceLastUpdate * 0.5f;
+    //    rotation += controller.timeSinceLastUpdate * 0.5f;
 }
 
 #pragma mark - Touch Event Handling
@@ -163,7 +158,7 @@ enum
 
 - (double)reverseXIfNeeded:(double) x {
     if (reverse_rotation) {
-        x = MAX_X - x;
+        x = self.bounds.size.width - x;
     }
     return x;
 }
@@ -179,6 +174,9 @@ enum
     }
     
     BOOL northPoleVisible = sin(_tilt * TO_RADIANS) > 0;
+    
+    float CENTER_Y = self.bounds.size.height / 2;
+    float RADIUS = self.bounds.size.width / 2;
     
     if (northPoleVisible) {
         double northPolePosition = -cos(_tilt * TO_RADIANS) * RADIUS + CENTER_Y;
@@ -205,9 +203,11 @@ enum
     starting_rotation = rotation;
     double x = startTouchPosition.x;
     x = [self reverseXIfNeeded:x];
+    float CENTER_X = self.bounds.size.width / 2;
     starting_rotation_offset = [self rotationFromBase:CENTER_X toOffset:x];
     tilt_inc = 0.0;
     starting_tilt = _tilt;
+    float CENTER_Y = self.bounds.size.height / 2;
     starting_tilt_offset = [self rotationFromBase:CENTER_Y toOffset:startTouchPosition.y];
     drag_direction = DRAG_UNDECIDED;
 }
@@ -222,8 +222,10 @@ enum
     
     double x = currentTouchPosition.x;
     x = [self reverseXIfNeeded:x];
+    float CENTER_X = self.bounds.size.width / 2;
     rotation = [self rotationFromBase:CENTER_X toOffset:x];
     rotation += starting_rotation - starting_rotation_offset;
+    float CENTER_Y = self.bounds.size.height / 2;
     _tilt = [self rotationFromBase:CENTER_Y toOffset:currentTouchPosition.y];
     _tilt += starting_tilt - starting_tilt_offset;
     fmod(_tilt, 360.0);
@@ -278,6 +280,7 @@ enum
 
 - (double)rotationFromBase:(double)base toOffset:(double)offset {
     double numer = offset - base;
+    float RADIUS = self.bounds.size.width / 2;
     if (numer > RADIUS) {
         numer = RADIUS;
     } else if (numer < -RADIUS) {
@@ -400,6 +403,7 @@ enum
     // Get uniform locations.
     uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_program, "modelViewProjectionMatrix");
     uniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_program, "normalMatrix");
+    
     _samplerLoc = glGetUniformLocation(_program, "s_texture");
     
     // Release vertex and fragment shaders.
