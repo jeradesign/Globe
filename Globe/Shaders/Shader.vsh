@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Jera Design LLC. All rights reserved.
 //
 
-const float SUNNY_SIDE_MIN = 0.5;
+const float SUNNY_SIDE_MIN = 0.60;
 const float DARK_SIDE = 0.1;
 const float TWILIGHT_END_COS = -0.31; // cos of end of twilight zone (108 degrees)
 
