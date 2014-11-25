@@ -92,7 +92,13 @@ enum
 - (void)drawRect:(CGRect)rect
 {
     float aspect = fabsf(self.bounds.size.width / self.bounds.size.height);
-    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
+    float verticalViewingAngle;
+    if (aspect > 1.0) {
+        verticalViewingAngle = 45.0;
+    } else {
+        verticalViewingAngle = 65.0;
+    }
+    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(verticalViewingAngle), aspect, 0.1f, 100.0f);
     
     GLKMatrix4 modelViewMatrix;
     
