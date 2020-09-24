@@ -29,6 +29,7 @@
 		4236830317BE223200B4965C /* GlobeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4236830217BE223200B4965C /* GlobeView.m */; };
 		4236830717BE347200B4965C /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4236830617BE347200B4965C /* Icon.png */; };
 		4236830917BE347700B4965C /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4236830817BE347700B4965C /* Icon@2x.png */; };
+		42F5E363251D51EF0032EFE9 /* mars_planar_projection_opo0745g.tif in Resources */ = {isa = PBXBuildFile; fileRef = 42F5E362251D51EF0032EFE9 /* mars_planar_projection_opo0745g.tif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		4236830217BE223200B4965C /* GlobeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobeView.m; sourceTree = "<group>"; };
 		4236830617BE347200B4965C /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		4236830817BE347700B4965C /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		42F5E362251D51EF0032EFE9 /* mars_planar_projection_opo0745g.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = mars_planar_projection_opo0745g.tif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				4223FD3616AB709B0031543C /* tinyworld4.png */,
+				42F5E362251D51EF0032EFE9 /* mars_planar_projection_opo0745g.tif */,
 				421C394D16AA947300651DF1 /* Globe-Info.plist */,
 				421C394E16AA947300651DF1 /* InfoPlist.strings */,
 				421C395116AA947300651DF1 /* main.m */,
@@ -187,6 +190,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 421C393216AA947300651DF1;
@@ -208,6 +212,7 @@
 				421C395816AA947300651DF1 /* Default.png in Resources */,
 				421C395A16AA947300651DF1 /* Default@2x.png in Resources */,
 				421C395C16AA947300651DF1 /* Default-568h@2x.png in Resources */,
+				42F5E363251D51EF0032EFE9 /* mars_planar_projection_opo0745g.tif in Resources */,
 				421C395F16AA947300651DF1 /* MainStoryboard_iPhone.storyboard in Resources */,
 				421C396216AA947300651DF1 /* MainStoryboard_iPad.storyboard in Resources */,
 				421C396416AA947300651DF1 /* Shader.fsh in Resources */,

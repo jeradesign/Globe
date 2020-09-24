@@ -328,7 +328,7 @@ enum
     //
     //    glBindVertexArrayOES(0);
     
-    NSString *texturePath = [[NSBundle mainBundle] pathForResource:@"tinyworld4" ofType:@"png"];
+    NSString *texturePath = [[NSBundle mainBundle] pathForResource:@"mars_planar_projection_opo0745g" ofType:@"tif"];
     NSError *error;
     _texture = [GLKTextureLoader textureWithContentsOfFile:texturePath options:nil error:&error];
     if (error != nil) {
